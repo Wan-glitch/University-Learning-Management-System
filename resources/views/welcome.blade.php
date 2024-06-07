@@ -78,7 +78,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div id="slideshow" class="carousel slide slideshow" data-ride="carousel">
-                    <div class="carousel-inner">
+                    <div class="carousel-inner" style="border-radius: 10px">
                         <div class="carousel-item active">
                             <img src="https://via.placeholder.com/800x400.png?text=Sample+Slideshow+Image" class="d-block w-100" alt="Slideshow Image">
                         </div>
