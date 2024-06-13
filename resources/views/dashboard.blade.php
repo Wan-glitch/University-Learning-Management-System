@@ -3,15 +3,12 @@
 <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-lg-12 col-md-12 order-1">
 
                 <style>
-                    .card {
-                        border-radius: 15px;
-                        overflow: hidden;
-                    }
 
                     .nav-tabs .nav-item {
                         flex: 1;
