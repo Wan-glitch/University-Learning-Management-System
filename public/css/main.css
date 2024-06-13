@@ -1,0 +1,22 @@
+/* public/main.css */
+body {
+    background-color: #F5F5F9 !important;
+}
+
+.card {
+    border-radius: 15px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 2px solid #E3E3E3 !important;
+}
+
+.nav-tabs .nav-item {
+    flex: 1 !important;
+    text-align: center !important;
+}
+
+.custom-navbar {
+    border-radius: 15px !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    border: 3px solid #E3E3E3 !important;
+}

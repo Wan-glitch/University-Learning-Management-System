@@ -1,0 +1,62 @@
+.search-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.search-icon {
+    margin-right: 5px;
+    color: #ecebeb;
+    /* Icon color */
+}
+
+
+.table-container {
+    max-height: 400px;
+    /* Set the maximum height for the scrollable container */
+    overflow-y: scroll;
+    /* Add vertical scrollbar when content exceeds max height */
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+
+
+.pagination-divider {
+    padding: 0;
+    margin: 0;
+    border: none;
+    color: #777;
+
+}
+
+.pagination .page-item .page-link {
+    background-color: #fff;
+    /* Background color for inactive pages */
+    border-color: #ddd;
+    /* Border color for inactive pages */
+    color: #333;
+    /* Text color for inactive pages */
+}
+
+/* Styling for active page number */
+.pagination .page-item.active .page-link {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+/* Override Bootstrap's default focus outline */
+.pagination .page-item .page-link:focus {
+    box-shadow: none;
+}
