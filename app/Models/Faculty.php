@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Faculty extends Model
 {
     use HasFactory;
+    protected $fillable = ['title', 'description', 'pic'];
+
+
+    public function hasPIC(){
+        return $this->belongsTo(User::class, 'pic');
+    }
+
 }

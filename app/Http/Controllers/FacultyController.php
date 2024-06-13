@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculty;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FacultyController extends Controller
 {
@@ -14,12 +15,28 @@ class FacultyController extends Controller
      */
     public function index()
     {
-        // Retrieve all faculties
         $title = "Faculty";
-        $faculties = Faculty::all();
 
-        // Return view with faculties data
-        return view('faculty.index', compact('faculties', 'title'));
+        // Query only active faculties and paginate them
+        $paginatedProjects = Faculty::where('status', 1)->paginate(10);
+
+        // Prepare pagination data
+        $paginationData = [
+            'current_page' => $paginatedProjects->currentPage(),
+            'last_page' => $paginatedProjects->lastPage(),
+            'per_page' => $paginatedProjects->perPage(),
+            'total' => $paginatedProjects->total(),
+        ];
+
+        // Return view with paginated faculties data
+        return view('faculty.index', compact('paginatedProjects', 'paginationData', 'title'));
+    }
+
+    public function detail($faculty)
+    {
+        $title = "Faculty Detail";
+        $faculty = Faculty::findOrFail($faculty);
+        return view('faculty.faculty_detail', compact('faculty', 'title'));
     }
 
     /**
@@ -41,21 +58,28 @@ class FacultyController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate the form data
-        $request->validate([
+        $validatedData = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+            'description' => 'required|string',
+            'TagifyUserListHidden' => 'required|integer', // Assuming it's an integer ID
+            // other validation rules
         ]);
 
-        // Create a new faculty instance
+        $title = $validatedData['title'];
+        $description = $validatedData['description'];
+        $userId = $validatedData['TagifyUserListHidden'];
+
+        // Example of storing selected user ID into the database
         $faculty = new Faculty();
-        $faculty->title = $request->title;
-        $faculty->description = $request->description;
+        $faculty->title = $title;
+        $faculty->description = $description;
+        $faculty->pic = $userId;
         $faculty->save();
 
-        // Redirect back with success message
         return redirect()->back()->with('success', 'Faculty created successfully!');
     }
+
+
 
     /**
      * Display the specified faculty.
