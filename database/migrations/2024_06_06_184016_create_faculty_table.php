@@ -17,6 +17,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->unsignedBigInteger('pic')->nullable();;
             $table->foreign('pic')->references('id')->on('users')->onDelete('cascade');
+            $table->boolean('status')->nullable()->default(1);
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+
             $table->timestamps();
         });
     }

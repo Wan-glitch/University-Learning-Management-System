@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('user_status')->default(1);;
             $table->unsignedBigInteger('role')->nullable()->default(null);
             $table->unsignedBigInteger('faculty')->nullable()->default(null);
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->rememberToken();
             $table->timestamps();
         });
