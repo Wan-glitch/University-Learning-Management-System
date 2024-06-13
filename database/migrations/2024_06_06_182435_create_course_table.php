@@ -17,6 +17,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             // $table->unsignedBigInteger('team_id'); // Assuming each course belongs to a faculty (team)
             // $table->foreign('team_id')->references('id')->on('teams')->onDelete('cascade');
+            $table->unsignedBigInteger('pic')->nullable();;
+            $table->foreign('pic')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

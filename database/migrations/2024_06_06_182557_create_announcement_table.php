@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('title');
             $table->text('content');
             $table->enum('category', ['Bulletin', 'Faculty', 'Reminder']); // Announcement categories
-            $table->unsignedBigInteger('user_id')->nullable(); // Faculty ID or Student ID (nullable for Bulletin)
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('remindto')->nullable(); // Faculty ID or Student ID (nullable for Bulletin)
+            $table->foreign('remindto')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }
