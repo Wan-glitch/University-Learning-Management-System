@@ -64,7 +64,18 @@
         </a>
     </li>
 
-
+    <li class="menu-item {{ 'users' == request()->path() ? 'active' : '' }}">
+        <a href="{{ route('users.index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-user"></i>
+            <div data-i18n="User Management">User Management</div>
+        </a>
+    </li>
+    <li class="menu-item {{ 'users' == request()->path() ? 'active' : '' }}">
+        <a href="{{ route('users.index') }}" class="menu-link">
+            <i class="menu-icon tf-icons bx bx-user"></i>
+            <div data-i18n="User Management">Course Management</div>
+        </a>
+    </li>
     {{-- <li class="menu-item {{ Request::is('courses/*') ? 'active open' : '' }}">
         <a href="javascript:void(0);" class="menu-link menu-toggle">
             <i class="menu-icon tf-icons bx bx-crown"></i>
