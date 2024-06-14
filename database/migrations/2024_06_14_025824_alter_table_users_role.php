@@ -16,15 +16,15 @@ return new class extends Migration
         DB::table('users')->whereNull('role')->update(['role' => 1]); // Assuming 1 is a valid role ID
         DB::table('users')->whereNull('faculty')->update(['faculty' => 1]); // Assuming 1 is a valid faculty ID
 
-        Schema::table('users', function (Blueprint $table) {
-            $table->unsignedBigInteger('role')->nullable(true)->change();
-            $table->unsignedBigInteger('faculty')->nullable(true)->change();
-        });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('role')->references('id')->on('roles')->onDelete('cascade');
-            $table->foreign('faculty')->references('id')->on('faculties');
+            $table->foreign('role')->references('id')->on('roles')->onDelete('set null');
+            $table->foreign('faculty')->references('id')->on('faculties')->onDelete('set null');
+
         });
+
+
+
     }
     /**
      * Reverse the migrations.
