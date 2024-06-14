@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_no')->unique()->nullable();
-            $table->integer('user_status')->default(1);;
+            $table->boolean('user_status')->default(1);;
             $table->unsignedBigInteger('role')->nullable()->default(null);
             $table->unsignedBigInteger('faculty')->nullable()->default(null);
             $table->foreignId('created_by')->nullable()->constrained('users');
