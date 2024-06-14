@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-use DB;
 use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RoleSeeder extends Seeder
 {
@@ -15,33 +15,36 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('roles')->delete();
 
-        DB::table('roles')->insert(array (
-            0 =>
-            array (
+        DB::table('roles')->insert([
+            [
                 'name' => 'admin',
                 'guard_name' => 'web',
-                'role_status'=> '1',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ),
-            1 =>
-            array (
+                'role_status' => '1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'faculty admin',
+                'guard_name' => 'web',
+                'role_status' => '1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'name' => 'lecturer',
                 'guard_name' => 'web',
-                'role_status'=> '1',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ),
-            2 =>
-            array (
+                'role_status' => '1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
                 'name' => 'student',
                 'guard_name' => 'web',
-                'role_status'=> '1',
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-            ),
-        ));
+                'role_status' => '1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 }
