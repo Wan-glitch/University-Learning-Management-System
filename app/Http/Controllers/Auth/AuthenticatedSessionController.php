@@ -45,4 +45,16 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/');
     }
+
+    protected function redirectTo()
+    {
+        switch (auth()->user()->role) {
+            case '1':
+                return '/admin/dashboard';
+                break;
+
+            default:
+                return '/';
+        }
+}
 }

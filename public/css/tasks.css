@@ -1,0 +1,83 @@
+
+.col-md-4 {
+    flex: 0 0 auto;
+    width: 28.5%; !important
+}
+.card-custom {
+margin-bottom: 20px;
+cursor: pointer;
+text-decoration: none;
+color: inherit;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.card-custom img {
+width: 100%;
+height: 150px;
+object-fit: cover;
+border-top-left-radius: 8px;
+border-top-right-radius: 8px;
+}
+.card-body-custom {
+padding: 20px;
+text-align: center;
+}
+.card-title-custom {
+font-size: 18px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+.card-text-custom {
+font-size: 14px;
+color: #6c757d;
+margin-bottom: 20px;
+}
+.bell {
+font-size: 20px;
+color: #6c757d;
+}
+.tasks-custom {
+background-color: white;
+border-radius: 8px;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+padding: 20px;
+}
+.tasks-custom h3 {
+font-size: 18px;
+margin-bottom: 20px;
+}
+.task-custom {
+display: flex;
+justify-content: space-between;
+margin-bottom: 10px;
+}
+.course-group + .course-group {
+border-top: 1px solid #dee2e6;
+padding-top: 10px;
+margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+.card-custom {
+    margin-left: auto;
+    margin-right: auto;
+}
+.tasks-custom {
+    width: 100%;
+}
+}
+
+@media (max-width: 480px) {
+.tasks-custom {
+    width: 100%;
+    margin-top: 20px;
+}
+}
+
+.course-group h5 {
+margin-top: 20px;
+
+}
+.tasks-custom {
+margin-top: 20px;
+}

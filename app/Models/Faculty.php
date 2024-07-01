@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\User;
+use App\Models\Course;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Faculty extends Model
 {
@@ -13,6 +15,17 @@ class Faculty extends Model
 
     public function hasPIC(){
         return $this->belongsTo(User::class, 'pic');
+    }
+
+
+
+    public function bulletins()
+    {
+        return $this->hasMany(Bulletin::class);
+    }
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'faculty');
     }
 
 }

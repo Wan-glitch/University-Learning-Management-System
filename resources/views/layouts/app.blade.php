@@ -32,6 +32,8 @@
 
         <!-- Core CSS -->
         <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+        @livewireStyles
         <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
         <link rel="stylesheet" href="/assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
         <link rel="stylesheet" href="/assets/css/demo.css" />
@@ -75,5 +77,6 @@
                 {{ $slot }}
             </main>
         </div> --}}
+        @livewireScripts
     </body>
 </html>

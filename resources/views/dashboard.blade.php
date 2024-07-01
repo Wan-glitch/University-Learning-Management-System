@@ -1,14 +1,24 @@
+
 @extends('layout.app')
 @section('content')
-<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+@if(Auth::check() && Auth::user()->role=='1')
+    @include('admin.dashboard')
+
+@else
+
+
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tasks.css') }}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="row">
             <div class="col-lg-12 col-md-12 order-1">
-
                 <style>
+                    /* Suggestions items */
+
 
                     .nav-tabs .nav-item {
                         flex: 1;
@@ -79,9 +89,7 @@
                     }
                 </style>
                 </head>
-
                 <body>
-                    {{-- <div class="container my-5"> --}}
                     <div class="row">
                         <div class="col-lg-9 col-md-8 col-12 mb-4">
                             <div class="card h-100">
@@ -90,15 +98,12 @@
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <div class="d-flex justify-content-end mb-3">
-                                        <button class="btn btn-primary" id="createEventBtn" onclick="showModal()">
+                                        <button class="btn btn-primary" data-bs-toggle="modal"
+                                            data-bs-target="#createBulletinModal">
                                             <span class="tf-icons bx bx-plus"></span>&nbsp; Announcement
                                         </button>
-                                        @include('announcement.create_announcement_modal')
                                     </div>
-
-
                                     <ul class="nav nav-tabs nav-fill" role="tablist">
-
                                         <li class="nav-item">
                                             <button type="button" class="nav-link active" role="tab"
                                                 data-bs-toggle="tab" data-bs-target="#bulletin" aria-controls="bulletin"
@@ -121,136 +126,115 @@
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane fade show active" id="bulletin" role="tabpanel">
-                                            <div class="item">
-                                                <p class="title">LOST &amp; FOUND ITEMS</p>
-                                                <p class="date">2 Feb 2024</p>
-                                            </div>
-                                            <div class="item">
-                                                <p class="title">Games Development Competition by Apple</p>
-                                                <p class="date">29 Jan 2024</p>
-                                            </div>
-                                            <a href="#" class="view-all">~ View All ~</a>
+                                            @foreach ($bulletins->where('category', 'Bulletin') as $bulletin)
+                                                <div class="item mb-3">
+                                                    <p class="title">{{ $bulletin->title }}</p>
+                                                    <p class="date">{{ $bulletin->created_at->format('d M Y') }}</p>
+                                                    {{-- <div class="actions">
+                                                        <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
+                                                        <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                    </div> --}}
+                                                </div>
+                                            @endforeach
+                                            <a href="#" class="view-all" data-category="Bulletin">~ View All ~</a>
                                         </div>
                                         <div class="tab-pane fade" id="faculty" role="tabpanel">
-                                            <!-- Faculty content goes here -->
+                                            @foreach ($bulletins->where('category', 'Faculty') as $bulletin)
+                                                <div class="item mb-3">
+                                                    <p class="title">{{ $bulletin->title }}</p>
+                                                    <p class="date">{{ $bulletin->created_at->format('d M Y') }}</p>
+                                                    <div class="actions">
+                                                        <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
+                                                        <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                            <a href="#" class="view-all" data-category="Faculty">~ View All ~</a>
                                         </div>
                                         <div class="tab-pane fade" id="reminder" role="tabpanel">
-                                            <!-- Reminder content goes here -->
+                                            @foreach ($bulletins->where('category', 'Reminder')->filter(fn($b) => $b->recipients->contains(auth()->user())) as $bulletin)
+                                                <div class="item mb-3">
+                                                    <p class="title">{{ $bulletin->title }}</p>
+                                                    <p class="date">{{ $bulletin->created_at->format('d M Y') }}</p>
+                                                    <div class="actions">
+                                                        <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                            <a href="#" class="view-all" data-category="Reminder">~ View All ~</a>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
-                        @include('include.tasklist')
-
-
-                    </div>
-
-                    {{-- </div> --}}
-                    <!-- / Content -->
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                        aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">SB12 MAINTENANCE</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis consequat auctor ipsum,
-                                        ut commodo
-                                        purus scelerisque molestie. Donec vestibulum felis quis sem convallis, quis
-                                        efficitur sapien
-                                        vestibulum. Vivamus fermentum dolor metus, sed condimentum quam sollicitudin a. Nam
-                                        suscipit
-                                        nunc id ligula convallis, vel lacinia nisi tempor. Nam bibendum volutpat ante non
-                                        auctor.
-                                        Vivamus ultricies neque id urna gravida, sed facilisis dolor ultrices. Vestibulum id
-                                        odio
-                                        aliquet, venenatis eros id, rutrum lacus. Etiam scelerisque sagittis suscipit.</p>
-                                    <p>Donec condimentum in erat vel semper. Nullam facilisis vel diam in aliquet. Praesent
-                                        varius
-                                        viverra odio quis sagittis. Nunc et metus at ligula dignissim porta vitae in lorem.
-                                        Praesent ac
-                                        elementum metus. Integer nec convallis quam, nec malesuada urna. Vestibulum molestie
-                                        et neque
-                                        nec sodales. Phasellus ut posuere arcu. Duis ligula metus, accumsan ac sem
-                                        hendrerit, porta
-                                        fringilla mauris. Phasellus id ante fringilla, congue lorem ut, faucibus magna. Nunc
-                                        placerat,
-                                        sem eget semper dictum, urna mi sodales nunc, vel fringilla nunc mauris sit amet
-                                        velit. </p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
+                        <div class="col-lg-3 col-md-6 col-12">
+                            <div class="tasks-custom">
+                                <h3 style="border-bottom: 1px solid #dee2e6;">Tasks</h3>
+                                @foreach($tasks as $courseName => $courseTasks)
+                                    <div class="course-group" style="border-bottom: 1px solid #dee2e6;">
+                                        <h5>{{ $courseName }}</h5>
+                                        @foreach($courseTasks as $task)
+                                            <div class="task-custom">
+                                                <div>
+                                                    <strong>{{ $task->title }}</strong><br>
+                                                </div>
+                                                <div>
+                                                    @if(\Carbon\Carbon::parse($task->due_date)->isPast())
+                                                        <span class="text-danger">{{ \Carbon\Carbon::parse($task->due_date)->format('d M, H:i') }}</span>
+                                                    @else
+                                                        <span>{{ \Carbon\Carbon::parse($task->due_date)->format('d M, H:i') }}</span>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                     </div>
-                @endsection
-                <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-                <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+                    @include('bulletin.create_bulletin_modal')
+                    @include('bulletin.edit_bulletin_modal')
+                    @include('bulletin.view_modal')
 
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-                <script>
+                    <script>
+                        $(document).ready(function() {
+                            $('.view-all').on('click', function(e) {
+                                e.preventDefault();
+                                var category = $(this).data('category');
+                                $.ajax({
+                                    url: "{{ route('bulletins.filter') }}",
+                                    type: "GET",
+                                    data: { category: category },
+                                    success: function(data) {
+                                        $('#bulletin-list').html(data);
+                                        $('#bulletinModal').modal('show');
+                                    }
+                                });
+                            });
 
-                    function toggleTab(e) {
-                        var hrefVal = $(e).attr('href');
-                        $('.nav-tabs li').removeClass('active');
-                        $('.nav-tabs li[data-active="' + hrefVal + '"]').addClass('active');
-                    }
+                            $('.close-btn').on('click', function() {
+                                $('#bulletinModal').modal('hide');
+                            });
 
-                    function showModal() {
-                        $('#createAnnouncementModal').modal('show');
-                    }
-
-                    $(document).ready(function() {
-                        // Initialize Tagify
-                        var userTagsInput = document.getElementById('userTags');
-                        var tagify = new Tagify(userTagsInput, {
-                            enforceWhitelist: true,
-                            whitelist: [], // You can populate whitelist dynamically if needed
-                            dropdown: {
-                                maxItems: 5,
-                                enabled: 0,
-                                closeOnSelect: false
-                            }
+                            $(window).on('click', function(event) {
+                                if (event.target.id === 'bulletinModal') {
+                                    $('#bulletinModal').modal('hide');
+                                }
+                            });
                         });
-
-                        // Show user selection if Reminder is chosen
-                        $("#announcementCategory").change(function() {
-                            if ($(this).val() === 'Reminder') {
-                                $("#userSelection").show();
-                                // You can add logic here to populate user selection options
-                            } else {
-                                $("#userSelection").hide();
-                            }
-                        });
-
-                        // Form submission handling
-                        $("#announcementForm").submit(function(e) {
-                            e.preventDefault(); // Prevent default form submission
-
-                            // Get form values
-                            var title = $("#announcementTitle").val();
-                            var content = $("#announcementContent").val();
-                            var category = $("#announcementCategory").val();
-                            var users = tagify.value.map(tag => tag.value); // Get selected users
-
-                            // You can send this data to your backend via AJAX
-                            console.log("Title: " + title);
-                            console.log("Content: " + content);
-                            console.log("Category: " + category);
-                            console.log("Users: " + users);
-
-                            // Close modal
-                            $("#createAnnouncementModal").modal('hide');
-
-                            // You can add AJAX call here to send data to the server
-                        });
-
-                    });
-                </script>
+                    </script>
+                    @endsection
+@endif

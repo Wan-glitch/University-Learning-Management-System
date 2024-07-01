@@ -30,7 +30,7 @@ class UsersTableSeeder extends Seeder
             [
                 //'role' => 0,
                 'name' => 'Irfan',
-                'role' => 1,
+                'role' => 2,
                 'phone_no' => '2123456789',
                 'email' => 'devzon3@gmail.com',
                 'password' => Hash::make('password'),
@@ -56,7 +56,7 @@ class UsersTableSeeder extends Seeder
             [
                 //'role' => 1,
                 'name' => 'Zura',
-                'role' => 1,
+                'role' => 3,
                 'phone_no' => '0123456788',
                 'email' => 'zura@gmail.com',
                 'password' => Hash::make('password'),

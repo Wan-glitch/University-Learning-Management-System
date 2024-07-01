@@ -17,15 +17,16 @@ return new class extends Migration
             $table->text('description')->nullable();
             // Reference to the faculty (team)
             $table->unsignedBigInteger('faculty')->nullable();
-            $table->foreign('faculty')->references('id')->on('faculties')->onDelete('cascade');
+            $table->foreign('faculty')->nullable()->references('id')->on('faculties')->onDelete('cascade');
             $table->unsignedBigInteger('pic')->nullable();
             $table->foreign('pic')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->boolean('status')->nullable()->default(1);
 
             // Using year and term combination
-            $table->year('year');
-            $table->tinyInteger('term')->comment('1: Term 1, 2: Term 2, 3: Term 3, 4: Term 4');
+            $table->year('year')->nullable();
+            $table->tinyInteger('term')->nullable()->comment('1: Term 1, 2: Term 2, 3: Term 3, 4: Term 4');
 
             $table->timestamps();
         });

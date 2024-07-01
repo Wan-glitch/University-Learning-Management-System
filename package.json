@@ -6,16 +6,26 @@
         "build": "vite build"
     },
     "devDependencies": {
+        "@alpinejs/intersect": "^3.14.1",
         "@tailwindcss/forms": "^0.5.2",
-        "alpinejs": "^3.4.2",
+        "alpinejs": "^3.14.1",
         "autoprefixer": "^10.4.2",
-        "axios": "^1.6.4",
+        "axios": "^1.7.2",
+        "laravel-echo": "^1.16.1",
+        "laravel-mix": "^6.0.49",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.31",
-        "tailwindcss": "^3.1.0",
+        "pusher-js": "^7.6.0",
+        "tailwindcss": "^3.4.4",
         "vite": "^5.0.0"
     },
     "dependencies": {
-        "@yaireo/tagify": "^4.26.5"
+        "@simonwep/pickr": "^1.9.1",
+        "@yaireo/tagify": "^4.27.0",
+        "datatables.net-dt": "^2.0.8",
+        "dropzone": "^6.0.0-beta.2",
+        "feather-icons": "^4.29.2",
+        "piexifjs": "^1.0.4",
+        "sweetalert2": "^11.6.13"
     }
 }

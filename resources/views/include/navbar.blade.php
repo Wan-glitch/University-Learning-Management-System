@@ -1,3 +1,6 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <!-- Navbar -->
 <nav x-data="{ open: false }"
     class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme custom-navbar"
@@ -8,13 +11,25 @@
         </a>
     </div>
 
-    <div class="navbar-nav-right d-flex align-items-center w-100" id="navbar-collapse">
+    {{-- <div class="navbar-nav-right d-flex align-items-center w-100" id="navbar-collapse"> --}}
+        <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
+            {{-- @if($title)
+                <div><strong>{{ $title }}</strong></div>
+            @endif --}}
+
         <ul class="navbar-nav flex-row align-items-center ms-auto">
+            <!-- Notification -->
+            <li class="nav-item">
+                <a class="nav-link" href="javascript:void(0);">
+                    <i class="bx bx-bell bx-sm"></i d-flex align-items-center>
+                </a>
+            </li>
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow d-flex align-items-center" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                        <img src="{{ $user->profile_photo_url }}" alt="w-px-40 h-auto rounded-circle" class="rounded-circle"/>
+
                     </div>
                     <span class="ms-2" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ Auth::user()->name }}</span>
                 </a>
@@ -24,7 +39,8 @@
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                                        {{-- <img src="/assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" /> --}}
+                                        <img src="{{ $user->profile_photo_url }}" alt="w-px-40 h-auto rounded-circle" class="rounded-circle"/>
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">

@@ -17,8 +17,11 @@ class CalendarController extends Controller
 
     public function index()
     {
-        return view('calendar.index');
+        $usersList = User::all();
+        return view('calendar.index',compact('usersList'));
     }
+
+
 
     public function store(Request $request)
     {

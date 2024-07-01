@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('profile_photo_path')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('phone_no')->unique()->nullable();
             $table->boolean('user_status')->default(1);;
             $table->unsignedBigInteger('role')->nullable();
             $table->unsignedBigInteger('faculty')->nullable();
+            $table->string('social_id')->nullable();    // add social_id column with varchar type
+            $table->string('social_type')->nullable();  // add social_type column with varchar type
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->rememberToken();

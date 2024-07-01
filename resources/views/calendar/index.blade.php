@@ -4,7 +4,14 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link rel="stylesheet" href="{{ asset('css/course-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/tagify.css') }}">
     <style>
         .calendar {
             background-color: white;
@@ -325,9 +332,10 @@
                     success: function(events) {
                         eventsList.empty();
                         events.forEach(event => {
+
                             const eventDate = new Date(event.date + 'T' + event.time);
                             const eventItem = $('<div class="event-item"></div>');
-                            eventItem.append('<img src="https://via.placeholder.com/40" alt="Event">');
+                            eventItem.append('<img src="{{$user->profile_photo_url}}" alt="Event">');
                             const eventDetails = $('<div class="event-details"></div>');
                             eventDetails.append('<h4>' + event.title + '</h4>');
                             eventDetails.append('<p>' + eventDate.toLocaleString('en-US', { weekday: 'long', day: 'numeric', month: 'short', year: 'numeric' }) + ' at ' + eventDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + '</p>');

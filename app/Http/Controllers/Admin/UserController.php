@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Role;
 use App\Models\User;
+use App\Models\Faculty;
+use App\Mail\UserCreated;
 use App\Exports\UsersExport;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
@@ -17,11 +22,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
-        return view('admin.users.index', compact('users'));
-
+        $roles = Role::all();
+        $faculties = Faculty::all();
+        $users = User::with('GotRole', 'HasFaculty')->get();
+        return view('admin.users.index', compact('users', 'roles', 'faculties'));
     }
-
 
     /**
      * Show the form for creating a new user.
@@ -30,7 +35,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        // Return the view to create a new user
+        $roles = Role::all();
+        $faculties = Faculty::all();
+        return view('admin.users.modals.add_user_modal', compact('roles', 'faculties'));
     }
 
     /**
@@ -41,71 +48,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate user input
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-            // Add more validation rules if needed
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|exists:roles,id',
+            'faculty' => 'nullable|exists:faculties,id',
         ]);
 
-        // Create the user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
-            // Add more fields if needed
+            'password' => Hash::make($request->password),
+            'role' => $request->role,
+            'faculty' => $request->faculty,
         ]);
 
-        if($user){
-            return redirect()->route('users.index')->with('success', 'User created successfully!');
-        } else {
-            return back()->withInput()->with('error', 'Failed to create user');
-        }
+        $user->assignRole($request->role);
 
+        // Send email to the user
+        Mail::to($user->email)->send(new UserCreated($user, $request->password));
+
+        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
 
 
-    public function batchStore(Request $request)
-    {
-        // Validate batch user input
-        $request->validate([
-            'batch_users' => 'required',
-            // Add more validation rules if needed
-        ]);
-
-        // Explode batch users input by comma and trim whitespace
-        $batchUsers = array_map('trim', explode(',', $request->batch_users));
-
-        // Array to store errors
-        $errors = [];
-
-        // Loop through batch users and create them
-        foreach ($batchUsers as $username) {
-            // Check if user with the same email already exists
-            if (User::where('email', $username)->exists()) {
-                $errors[] = "User with email $username already exists.";
-                continue;
-            }
-
-            // Create the user
-            User::create([
-                'name' => $username, // Assuming username is the name
-                'email' => $username, // Assuming username is also the email
-                'password' => bcrypt('defaultpassword'), // You can set default password here or leave it blank
-                // Add more fields if needed
-            ]);
-        }
-
-        // Check if there were any errors during batch user creation
-        if (!empty($errors)) {
-            return redirect()->back()->with('error', implode('<br>', $errors));
-        }
-
-        // Redirect back with success message
-        return redirect()->route('users.index')->with('success', 'Batch users created successfully!');
-    }
     /**
      * Display the specified user.
      *
@@ -114,10 +82,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id); // Find user by ID
+        $user = User::with('GotRole', 'HasFaculty')->findOrFail($id);
         return view('admin.users.show', compact('user'));
     }
-
     /**
      * Show the form for editing the specified user.
      *
@@ -126,10 +93,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id); // Find user by ID
-        return view('admin.users.edit', compact('user'));
+        $user = User::findOrFail($id);
+        $roles = Role::all();
+        $faculties = Faculty::all();
+        return view('admin.users.edit', compact('user', 'roles', 'faculties'));
     }
-
     /**
      * Update the specified user in storage.
      *
@@ -139,23 +107,37 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate user input
+        $user = User::findOrFail($id);
+
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            // Add more validation rules if needed
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'nullable|string|min:8|confirmed',
+            'role' => 'required|exists:roles,id',
+            'faculty' => 'nullable|exists:faculties,id',
         ]);
 
-        // Update the user
-        $user = User::findOrFail($id); // Find user by ID
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            // Update other fields if needed
-        ]);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $newPassword = null;
+        if ($request->filled('password')) {
+            $newPassword = $request->password;
+            $user->password = Hash::make($newPassword);
+        }
+        $user->role = $request->role;
+        $user->faculty = $request->faculty;
+        $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
+        $user->syncRoles($request->role);
+
+        // Send email to the user if the password was updated
+        if ($newPassword) {
+            Mail::to($user->email)->send(new \App\Mail\UserUpdated($user, $newPassword));
+        }
+
+        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
     }
+
 
     /**
      * Remove the specified user from storage.
@@ -191,5 +173,15 @@ class UserController extends Controller
     public function export()
     {
         return Excel::download(new UsersExport, 'users.xlsx');
+    }
+
+    public function getUser(Request $request)
+    {
+        $query = $request->input('query');
+        $users = User::where('name', 'LIKE', "%{$query}%")
+                      ->orWhere('email', 'LIKE', "%{$query}%")
+                      ->get(['id', 'name', 'email']);
+
+        return response()->json($users);
     }
 }

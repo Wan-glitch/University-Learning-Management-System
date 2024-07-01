@@ -1,10 +1,11 @@
-<div class="container-xxl flex-grow-1 container-p-y">
+
+
     <div class="row">
         <!-- Profile Information -->
         <div class="col-lg-12 col-md-12 col-12 mb-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <div class="row">
+
                         <section>
                             <header>
                                 <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -16,13 +17,9 @@
                                 </p>
                             </header>
 
-                            <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+                            <form id="profileForm" method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
                                 @csrf
-                            </form>
-
-                            <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
-                                @csrf
-                                @method('patch')
+                                @method('PATCH')
 
                                 <div>
                                     <label for="name" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Name') }}</label>
@@ -58,6 +55,12 @@
                                     @endif
                                 </div>
 
+                                <div>
+                                    <input type="hidden" name="notify_bulletins" value="0">
+                                    <label for="notify_bulletins" class="block font-medium text-sm text-gray-700 dark:text-gray-300">{{ __('Receive Bulletin Notifications') }}</label>
+                                    <input id="notify_bulletins" name="notify_bulletins" type="checkbox" class="mt-1 block" value="1" {{ old('notify_bulletins', $user->notify_bulletins) ? 'checked' : '' }}>
+                                </div>
+
                                 <div class="flex items-center gap-4">
                                     <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
 
@@ -73,9 +76,22 @@
                                 </div>
                             </form>
                         </section>
-                    </div>
+
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+
+<script>
+    document.getElementById('profileForm').addEventListener('submit', function(e) {
+        const formData = new FormData(this);
+        const data = {};
+        formData.forEach((value, key) => {
+            data[key] = value;
+        });
+
+        console.log('Form Data:', data);
+    });
+</script>
+

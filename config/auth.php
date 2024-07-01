@@ -65,6 +65,11 @@ return [
             'model' => App\Models\User::class,
         ],
 
+        'roles' => [
+            'driver' => 'eloquent',
+            'model' => App\Roles::class, // custom role model
+        ],
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

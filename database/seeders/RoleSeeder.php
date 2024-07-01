@@ -24,13 +24,7 @@ class RoleSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'name' => 'faculty admin',
-                'guard_name' => 'web',
-                'role_status' => '1',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
+
             [
                 'name' => 'lecturer',
                 'guard_name' => 'web',
@@ -40,6 +34,13 @@ class RoleSeeder extends Seeder
             ],
             [
                 'name' => 'student',
+                'guard_name' => 'web',
+                'role_status' => '1',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'faculty admin',
                 'guard_name' => 'web',
                 'role_status' => '1',
                 'created_at' => now(),

@@ -27,8 +27,19 @@
     <link rel="stylesheet" href="/assets/vendor/fonts/boxicons.css" />
 
     <!-- Core CSS -->
+
+    <link href="{{ asset('css/tailwind.css') }}" rel="stylesheet">
+    @livewireStyles
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+    {{-- <script src="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.all.min.js
+    "></script>
+    <link href="
+    https://cdn.jsdelivr.net/npm/sweetalert2@11.12.1/dist/sweetalert2.min.css
+    " rel="stylesheet"> --}}
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <link href="{{ asset('css/main.css') }}" rel="stylesheet">
     <link href="{{ asset('css/tablayout.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="/assets/vendor/css/core.css" class="template-customizer-core-css" />
@@ -37,6 +48,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+
 
 
     <!-- Vendors CSS -->
@@ -55,6 +69,7 @@
 
     {{-- jquery --}}
     <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
 </head>
 @yield('css')
 
@@ -68,9 +83,9 @@
                 {{-- <div class="app-brand demo">
           <a href="/" class="app-brand-link">
             <span class="app-brand-logo demo">
-              <img src="/assets/img/fiscal-digest.jpg" style="height:60px">
+              <img src="/assets/img/ulms.jpg" style="height:60px">
             </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">Fiscal Digest Helpdesk</span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2">University Learning Management System</span>
           </a>
 
           <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -103,6 +118,7 @@
 
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
+
     </div>
     <!-- / Layout wrapper -->
 
@@ -121,10 +137,14 @@
 
     <!-- Main JS -->
     <script src="/assets/js/main.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- ApexCharts JS -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
     <!-- Page JS -->
     <script src="/assets/js/dashboards-analytics.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
@@ -142,8 +162,48 @@
         $(document).ready(function() {
             $('#table_id').DataTable();
         });
+
+
+        function showAlert(type, title, text) {
+            Swal.fire({
+                icon: type,
+                title: title,
+                text: text,
+                confirmButtonText: 'OK'
+            });
+        }
+
+        function deleteConfirmation(event) {
+            event.preventDefault();
+            var form = event.target.form;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You won\'t be able to revert this!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+        }
+
+        @if (session('success'))
+            showAlert('success', 'Success', '{{ session('success') }}');
+        @endif
+
+        @if (session('error'))
+            showAlert('error', 'Error', '{{ session('error') }}');
+        @endif
     </script>
     @yield('js')
+
+
+    @livewireScripts
+
 </body>
 
 </html>

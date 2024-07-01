@@ -20,6 +20,7 @@ class CourseSeeder extends Seeder
             'pic' => 1, // Assuming the user ID 1 is the person in charge
             'created_by' => 1,
             'updated_by' => 1,
+            'status' => 1,
             'year' => 2024,
             'term' => 1
         ]);
@@ -31,6 +32,7 @@ class CourseSeeder extends Seeder
             'pic' => 2, // Assuming the user ID 2 is the person in charge
             'created_by' => 1,
             'updated_by' => 1,
+            'status' => 1,
             'year' => 2024,
             'term' => 2
         ]);

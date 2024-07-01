@@ -1,33 +1,5 @@
-<!-- events_widget.blade.php -->
-{{-- <div class="col-lg-4 mb-4">
 
-    <div class="event-details-widget">
-        <button class="add-new-appointment">+ Add New Event</button>
-        @include('calendar.modals.event-modal')
-        <h3>You are going to</h3>
-        <div class="event-item">
-            <img src="https://via.placeholder.com/40" alt="Event">
-            <div class="event-details">
-                <h4>Final Year Exam 1</h4>
-                <p>16 October 2019 at 5:00 PM</p>
-            </div>
-        </div>
-        <div class="event-item">
-            <img src="https://via.placeholder.com/40" alt="Event">
-            <div class="event-details">
-                <h4>Meeting with Mr. Smith and others</h4>
-                <p>16 October 2019 at 5:00 PM - Online meeting</p>
-                <div>
-                    <img src="https://via.placeholder.com/40" alt="Person" style="width: 20px; height: 20px;">
-                    <img src="https://via.placeholder.com/40" alt="Person" style="width: 20px; height: 20px;">
-                    <img src="https://via.placeholder.com/40" alt="Person" style="width: 20px; height: 20px;">
-                    <span>14+</span>
-                </div>
-            </div>
-        </div>
-        <button class="add-new-appointment">See More</button>
-    </div>
-</div> --}}
+
 
 <style>
     .event-details-widget {
