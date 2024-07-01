@@ -63,7 +63,7 @@
 </div>
 
 
-<!-- Modal for Viewing Assignment Details and Submitting Assignments -->
+
 <div class="modal fade" id="assignmentModal" tabindex="-1" role="dialog" aria-labelledby="assignmentModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" id="assignmentModalDialog" role="document">
         <div class="modal-content">
