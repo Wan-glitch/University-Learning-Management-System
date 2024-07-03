@@ -12,9 +12,8 @@ class Course extends Model
     protected $table = 'courses';
 
     protected $fillable = [
-        'name', 'description', 'faculty', 'pic', 'created_by', 'updated_by', 'year', 'term', 'status'
+        'name', 'description', 'faculty', 'pic', 'created_by', 'updated_by', 'year', 'term', 'status', 'students_can_announce'
     ];
-
 
     public function schedules()
     {

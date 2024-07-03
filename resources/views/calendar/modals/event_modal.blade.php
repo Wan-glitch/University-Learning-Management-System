@@ -1,11 +1,5 @@
 
-
-<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
-<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
-<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
-
 <style>
-
 :root {
     --tagify-dd-item-pad: .5em .7em;
 }
@@ -123,6 +117,7 @@
     border-top: 1px solid #DDD;
 }
 
+
 </style>
 
 
@@ -131,6 +126,9 @@
 <!-- Modern or es5 bundle -->
 <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.es5.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
 
 <div class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -140,7 +138,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('calendar.store') }}" method="POST">
+                <form id="addUsersForm" action="{{ route('calendar.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
@@ -160,10 +158,7 @@
                             <input id="TagifyUserList" name="users-list-tags" class="users-list form-control" value="">
                         </div>
                     </div>
-                    {{-- <div class="mb-3">
-                        <label for="color" class="form-label">Color</label>
-                        <input type="color" class="form-control" id="color" name="color" required>
-                    </div> --}}
+
                     <div class="mb-3">
                         <label for="color" class="form-label">Color</label>
                         <div id="color-picker"></div>
@@ -176,7 +171,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -216,6 +210,7 @@
             pickr.hide();
         });
     });
+
     document.addEventListener("DOMContentLoaded", function() {
         var inputElm = document.querySelector('input[name=users-list-tags]');
 
@@ -237,6 +232,9 @@
                 </tag>
             `
         }
+
+
+
         function suggestionItemTemplate(tagData) {
             return `
                 <div ${this.getAttributes(tagData)}
@@ -253,6 +251,7 @@
                 </div>
             `
         }
+
         function dropdownHeaderTemplate(suggestions) {
             return `
                 <header data-selector='tagify-suggestions-header' class="${this.settings.classNames.dropdownItem} ${this.settings.classNames.dropdownItem}__addAll">
@@ -263,116 +262,101 @@
             `
         }
 
-        // Fetch initial suggestions using AJAX
-        $.ajax({
-            url: '{{ route('get-initial-suggestions') }}',
-            method: 'GET',
-            success: function(response) {
-                var suggestions = response.map(user => ({
-                    value: user.id,
-                    name: user.name,
-                    email: user.email
 
-                }));
-                initializeTagify(suggestions);
-                tagify.dropdown.show.call(tagify, query);
+        var tagify = new Tagify(inputElm, {
+            tagTextProp: 'name', // very important since a custom template is used with this property as text
+            skipInvalid: true, // do not temporarily add invalid tags
+            dropdown: {
+                closeOnSelect: false,
+                enabled: 0,
+                classname: 'users-list',
+                searchKeys: ['name', 'email']  // very important to set by which keys to search for suggestions when typing
             },
-            error: function(xhr) {
-                console.error('Error fetching initial suggestions:', xhr);
+            templates: {
+                tag: tagTemplate,
+                dropdownItem: suggestionItemTemplate,
+                dropdownHeader: dropdownHeaderTemplate
+            },
+            whitelist: [
+                @foreach($UserList as $user)
+                    {
+                        "value": {{ $user->id }},
+                        "name": "{{ $user->name }}",
+
+                        "avatar": "{{$user->profile_photo_url}}",
+                        "email": "{{ $user->email }}",
+                        "team": "{{ $user->HasFaculty->title }}"
+                    },
+
+
+                @endforeach
+            ],
+            transformTag: (tagData, originalData) => {
+                var { name, email } = parseFullValue(tagData.name)
+                tagData.name = name
+                tagData.email = email || tagData.email
+            },
+            validate({ name, email }) {
+                // when editing a tag, there will only be the "name" property which contains name + email (see 'transformTag' above)
+                if (!email && name) {
+                    var parsed = parseFullValue(name)
+                    name = parsed.name
+                    email = parsed.email
+                }
+
+                if (!name) return "Missing name"
+                if (!validateEmail(email)) return "Invalid email"
+
+                return true
             }
         });
 
-        function initializeTagify(suggestions) {
-            var tagify = new Tagify(inputElm, {
-                tagTextProp: 'name',
-                skipInvalid: true,
-                dropdown: {
-                    closeOnSelect: false,
-                    enabled: 0,
-                    classname: 'users-list',
-                    searchKeys: ['name', 'email']
-                },
-                templates: {
-                    tag: tagTemplate,
-                    dropdownItem: suggestionItemTemplate,
-                    dropdownHeader: dropdownHeaderTemplate
-                },
-                whitelist: [
-                    @foreach($usersList as $user)
-                        {
-                            "value": {{ $user->id }},
-                            "name": "{{ $user->name }}",
-                            "avatar": "{{ $user->profile_photo_url }}",
-                            "email": "{{ $user->email }}",
-                            "team": "{{ $user->HasFaculty->title ?? 'Not Assigned' }}"
-                        },
-                    @endforeach
-                ],
-                transformTag: (tagData, originalData) => {
-                    var { name, email } = parseFullValue(tagData.name)
-                    tagData.name = name
-                    tagData.email = email || tagData.email
-                },
-                validate({ name, email }) {
-                    if (!email && name) {
-                        var parsed = parseFullValue(name)
-                        name = parsed.name
-                        email = parsed.email
-                    }
 
-                    if (!name) return "Missing name"
-                    if (!validateEmail(email)) return "Invalid email"
+        // Handle form submission
+        document.querySelector('#addUsersForm').addEventListener('submit', function(e) {
+            // Get the selected student IDs
+            var selectedStudents = tagify.value.map(item => item.value);
 
-                    return true
-                }
-            });
+            // Set the selected IDs in a hidden input
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'TagifyUserList';
+            hiddenInput.value = JSON.stringify(selectedStudents);
 
-            tagify.on('add', updateHiddenInput);
-            tagify.on('remove', updateHiddenInput);
+            this.appendChild(hiddenInput);
+        });
 
-            function updateHiddenInput() {
-                var selectedUsers = tagify.value.map(function(tagData) {
-                    return tagData.value;
-                });
+        // attach events listeners
+        tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
+              .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
 
-                document.querySelector('#TagifyUserListHidden').value = selectedUsers.join(',');
+        function onSelectSuggestion(e) {
+            if (e.detail.event.target.matches('.remove-all-tags')) {
+                tagify.removeAllTags()
             }
 
-            inputElm.addEventListener('input', function(e) {
-                const query = e.target.value.trim();
-                if (query) {
-                    $.ajax({
-                        url: '{{ route('get-user') }}',
-                        method: 'GET',
-                        data: { query: query },
-                        success: function(response) {
-                            var suggestions = response.map(user => ({
-                                value: user.id,
-                                name: user.name,
-                                email: user.email,
-                                avatar: user.profile_photo_url,
-                            }));
-                            tagify.settings.whitelist = suggestions;
-                            tagify.dropdown.show.call(tagify, query);
-                        },
-                        error: function(xhr) {
-                            console.error('Error fetching user suggestions:', xhr);
-                        }
-                    });
-                }
-            });
+            // custom class from "dropdownHeaderTemplate"
+            else if (e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`))
+                tagify.dropdown.selectAll();
         }
-    });
 
-    function escapeHTML(s) {
-        return typeof s == 'string' ? s
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/`|'/g, "&#039;")
-            : s;
-    }
+        function onEditStart({ detail: { tag, data } }) {
+            tagify.setTagTextNode(tag, `${data.name} <${data.email}>`)
+        }
+
+
+        // The below code is printed as escaped, so please copy this function from:
+        // https://github.com/yairEO/tagify/blob/master/src/parts/helpers.js#L89-L97
+        function escapeHTML(s) {
+            return typeof s == 'string' ? s
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/`|'/g, "&#039;")
+                : s;
+        }
+
 
         // The below part is only if you want to split the users into groups, when rendering the suggestions list dropdown:
         // (since each user also has a 'team' property)
@@ -387,7 +371,8 @@
 
                 return acc
             }, {})
-        const getUsersSuggestionsHTML = teamUsers => teamUsers.map((suggestion, idx) => {
+
+            const getUsersSuggestionsHTML = teamUsers => teamUsers.map((suggestion, idx) => {
                 if (typeof suggestion == 'string' || typeof suggestion == 'number')
                     suggestion = { value: suggestion }
 
@@ -402,32 +387,24 @@
             return Object.entries(teamsOfUsers).map(([team, teamUsers]) => {
                 return `<div class="tagify__dropdown__itemsGroup" data-title="Faculty ${team}:">${getUsersSuggestionsHTML(teamUsers)}</div>`
             }).join("")
-    }
-
-    function validateEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-    }
-
-    function parseFullValue(value) {
-        var parts = value.split(/<(.*?)>/g),
-            name = parts[0].trim(),
-            email = parts[1]?.replace(/<(.*?)>/g, '').trim();
-
-        return { name, email }
-    }
-
-        // attach events listeners
-        tagify.on('dropdown:select', onSelectSuggestion) // allows selecting all the suggested (whitelist) items
-              .on('edit:start', onEditStart)  // show custom text in the tag while in edit-mode
-
-              function onSelectSuggestion(e) {
-            if (e.detail.event.target.matches('.remove-all-tags')) {
-                tagify.removeAllTags()
-            }
-
-            // custom class from "dropdownHeaderTemplate"
-            else if (e.detail.elm.classList.contains(`${tagify.settings.classNames.dropdownItem}__addAll`))
-                tagify.dropdown.selectAll();
         }
+
+
+        // https://stackoverflow.com/a/9204568/104380
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+        }
+
+        function parseFullValue(value) {
+            // https://stackoverflow.com/a/11592042/104380
+            var parts = value.split(/<(.*?)>/g),
+                name = parts[0].trim(),
+                email = parts[1]?.replace(/<(.*?)>/g, '').trim();
+
+            return { name, email }
+        }
+    });
+
+
 
 </script>

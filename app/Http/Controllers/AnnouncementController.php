@@ -49,8 +49,8 @@ class AnnouncementController extends Controller
         }
 
         $announcement->save();
-
-        return response()->json($response);
+        return response()->json(array_merge($response, ['success' => 'Announcement sent successfully']));
+        // return response()->json($response);
     }
 
     public function destroy($id)
@@ -61,20 +61,5 @@ class AnnouncementController extends Controller
         return redirect()->back()->with('success', 'Announcement deleted successfully.');
     }
 
-    // // New method to store comments
-    // public function storeComment(Request $request)
-    // {
-    //     $request->validate([
-    //         'announcement_id' => 'required|exists:announcements,id',
-    //         'content' => 'required'
-    //     ]);
 
-    //     $comment = new Comment();
-    //     $comment->announcement_id = $request->input('announcement_id');
-    //     $comment->user_id = auth()->id();
-    //     $comment->content = $request->input('content');
-    //     $comment->save();
-
-    //     return response()->json(['success' => true, 'comment' => $comment]);
-    // }
 }

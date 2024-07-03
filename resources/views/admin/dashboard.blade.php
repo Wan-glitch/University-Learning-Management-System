@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <!-- Products Card -->
+
 
         <div class="col-md-3">
             <div class="card equal-card">
@@ -31,7 +31,7 @@
                         <div class="content-left">
                             <span>Roles</span>
                             <div class="d-flex align-items-end mt-2">
-                                <h3 class="mb-0 me-2">${{ $Roles }}</h3>
+                                <h3 class="mb-0 me-2">{{ $Roles }}</h3>
 
                             </div>
                             <small>Total Roles</small>
@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-        <!-- Orders Card -->
+
         <div class="col-md-3">
             <div class="card equal-card">
                 <div class="card-body">

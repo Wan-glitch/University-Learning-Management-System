@@ -1,4 +1,4 @@
-<!-- resources/views/user_management.blade.php -->
+
 @extends('layout.app')
 @section('content')
     <style>

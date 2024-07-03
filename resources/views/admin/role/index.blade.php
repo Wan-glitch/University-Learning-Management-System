@@ -205,7 +205,7 @@
                                     <i class="bx bx-export me-1"></i>Export
                                 </a>
                                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createCourseModal">
-                                    <i class="bx bx-plus me-0 me-sm-1"></i> + New User
+                                    <i class="bx bx-plus me-0 me-sm-1"></i> New User
                                 </button>
 
                             </div>

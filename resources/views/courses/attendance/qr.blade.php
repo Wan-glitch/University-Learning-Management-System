@@ -1,14 +1,4 @@
-{{-- resources/views/courses/attendance/qr.blade.php --}}
-{{-- @extends('layout.app')
 
-@section('content')
-<div class="text-center">
-    <h3>Scan this QR Code to register your attendance</h3>
-    {!! $qrCode !!}
-    <p>If you are unable to scan the QR Code, use this link to sign in:</p>
-    <p><a href="{{ route('attendance.manual', $course_id) }}">{{ route('attendance.manual', $course_id) }}</a></p>
-</div>
-@endsection --}}
 
 
 

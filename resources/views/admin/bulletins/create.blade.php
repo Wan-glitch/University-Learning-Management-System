@@ -36,7 +36,7 @@
                                     <select name="faculty_id" class="form-control">
                                         <option value="">None</option>
                                         @foreach ($faculties as $faculty)
-                                            <option value="{{ $faculty->id }}">{{ $faculty->name }}</option>
+                                            <option value="{{ $faculty->id }}">{{ $faculty->title }}</option>
                                         @endforeach
                                     </select>
                                 </div>

@@ -98,10 +98,14 @@
                                 </div>
                                 <div class="card-body d-flex flex-column">
                                     <div class="d-flex justify-content-end mb-3">
+                                    @can('Create Bulletin')
                                         <button class="btn btn-primary" data-bs-toggle="modal"
                                             data-bs-target="#createBulletinModal">
                                             <span class="tf-icons bx bx-plus"></span>&nbsp; Announcement
                                         </button>
+                                    @endcan
+
+
                                     </div>
                                     <ul class="nav nav-tabs nav-fill" role="tablist">
                                         <li class="nav-item">
@@ -130,14 +134,18 @@
                                                 <div class="item mb-3">
                                                     <p class="title">{{ $bulletin->title }}</p>
                                                     <p class="date">{{ $bulletin->created_at->format('d M Y') }}</p>
-                                                    {{-- <div class="actions">
-                                                        <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
-                                                        <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                        </form>
-                                                    </div> --}}
+                                                    <div class="actions">
+                                                        @can('Edit Bulletin')
+                                                            <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
+                                                        @endcan
+                                                        @can('Delete Bulletin')
+                                                            <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                            </form>
+                                                        @endcan
+                                                    </div>
                                                 </div>
                                             @endforeach
                                             <a href="#" class="view-all" data-category="Bulletin">~ View All ~</a>
@@ -148,12 +156,16 @@
                                                     <p class="title">{{ $bulletin->title }}</p>
                                                     <p class="date">{{ $bulletin->created_at->format('d M Y') }}</p>
                                                     <div class="actions">
-                                                        <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
-                                                        <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                        </form>
+                                                        @can('Edit Bulletin')
+                                                            <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
+                                                        @endcan
+                                                        @can('Delete Bulletin')
+                                                            <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                            </form>
+                                                        @endcan
                                                     </div>
                                                 </div>
                                             @endforeach
@@ -165,11 +177,16 @@
                                                     <p class="title">{{ $bulletin->title }}</p>
                                                     <p class="date">{{ $bulletin->created_at->format('d M Y') }}</p>
                                                     <div class="actions">
-                                                        <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                                        </form>
+                                                        @can('Edit Bulletin')
+                                                            <button class="btn btn-sm btn-warning" onclick="loadEditBulletin({{ $bulletin }})">Edit</button>
+                                                        @endcan
+                                                        @can('Delete Bulletin')
+                                                            <form action="{{ route('bulletins.destroy', $bulletin->id) }}" method="POST" class="d-inline-block">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                                            </form>
+                                                        @endcan
                                                     </div>
                                                 </div>
                                             @endforeach

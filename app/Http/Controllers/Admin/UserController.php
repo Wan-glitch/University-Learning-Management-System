@@ -64,8 +64,6 @@ class UserController extends Controller
             'faculty' => $request->faculty,
         ]);
 
-        $user->assignRole($request->role);
-
         // Send email to the user
         Mail::to($user->email)->send(new UserCreated($user, $request->password));
 
@@ -149,7 +147,7 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id); // Find user by ID
         $user->delete();
-        return redirect()->route('users.index')->with('success', 'User deleted successfully!');
+        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully!');
     }
 
     public function getInitialSuggestions()

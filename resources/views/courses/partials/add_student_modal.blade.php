@@ -124,35 +124,7 @@
 
 </style>
 
-{{-- <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="addStudentsForm" method="POST" action="{{ route('course.addStudent', $course) }}">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addStudentModalLabel">Add Students</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="student_ids" class="form-label">Select Students</label>
-                        <select id="student_ids" name="student_ids[]" class="form-select" multiple required>
-                            @foreach($studentsList as $student)
-                                <option value="{{ $student->id }}">{{ $student->name }} ({{ $student->email }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Add Students</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div> --}}
-<!-- Add this to the head section of your layout file or directly in the modal file -->
-<!-- Add this to the head section of your layout file or directly in the modal file -->
+
 <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
 <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>

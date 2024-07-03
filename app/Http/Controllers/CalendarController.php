@@ -17,8 +17,8 @@ class CalendarController extends Controller
 
     public function index()
     {
-        $usersList = User::all();
-        return view('calendar.index',compact('usersList'));
+        $UserList = User::all();
+        return view('calendar.index',compact('UserList'));
     }
 
 
@@ -34,7 +34,8 @@ class CalendarController extends Controller
         ]);
 
         // Get the guest IDs from the hidden input
-        $guestIds = array_filter(explode(',', $request->input('TagifyUserListHidden')));
+
+        $guestIds = json_decode($request->input('TagifyUserList'));
 
         // Check if there are guest IDs to process
         if (!empty($guestIds)) {
@@ -94,5 +95,86 @@ class CalendarController extends Controller
         }
 
         return response()->json(['status' => 'success']);
+    }
+    public function getEvents(Request $request)
+    {
+        $month = $request->input('month');
+
+        // Validate the month input
+        if (!$month || !preg_match('/^\d{4}-\d{2}$/', $month)) {
+            return response()->json(['error' => 'Invalid month format.'], 400);
+        }
+
+        // Fetch events for the specified month
+        $events = Event::whereYear('date', substr($month, 0, 4))
+            ->whereMonth('date', substr($month, 5, 2))
+            ->get();
+
+        return response()->json($events);
+    }
+    /**
+     * Accepts an invitation to an event.
+     *
+     * @param int $id The ID of the event invitation.
+     * @return \Illuminate\Http\RedirectResponse Redirects back to the previous page with a success message.
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If no invitation is found for the given ID and user.
+     */
+    public function acceptInvitation($id)
+    {
+        // Find the invitation for the given event ID and user ID
+        $invitation = EventGuest::where('event_id', $id)
+                                ->where('user_id', Auth::id())
+                                ->firstOrFail();
+        $invitation->update(['status' => 'accepted']);
+
+        return redirect()->back()->with('success', 'You have accepted the invitation.');
+    }
+
+    public function declineInvitation($id)
+    {
+        $invitation = EventGuest::where('event_id', $id)
+                                ->where('user_id', Auth::id())
+                                ->firstOrFail();
+        $invitation->update(['status' => 'declined']);
+
+        return redirect()->back()->with('success', 'You have declined the invitation.');
+    }
+
+    public function showInvitations()
+    {
+        $invitations = EventGuest::where('user_id', auth()->id())->with('event')->get();
+        return view('calendar.invitations', compact('invitations'));
+    }
+    public function getNotifications()
+    {
+        $notifications = EventGuest::where('user_id', auth()->id())
+            ->where('status', 'pending')
+            ->with(['event.creator', 'user']) // Eager load the event creator
+            ->get();
+
+        return response()->json($notifications);
+    }
+
+    public function respondToInvitation($id, $response)
+    {
+        $invitation = EventGuest::where('event_id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $invitation->update(['status' => $response]);
+
+        return response()->json(['success' => 'Invitation ' . $response . ' successfully']);
+    }
+
+    public function removeNotification($id)
+    {
+        $notification = EventGuest::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
+        $notification->delete();
+
+        return response()->json(['success' => 'Notification removed successfully']);
+    }
+
+    public function clearNotifications()
+    {
+        EventGuest::where('user_id', auth()->id())->where('status', 'pending')->delete();
+
+        return response()->json(['success' => 'All notifications cleared']);
     }
 }

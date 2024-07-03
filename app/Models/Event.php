@@ -20,4 +20,8 @@ class Event extends Model
     {
         return $this->hasMany(EventGuest::class);
     }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 }

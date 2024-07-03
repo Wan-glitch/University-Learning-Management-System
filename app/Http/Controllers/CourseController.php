@@ -442,26 +442,6 @@ class CourseController extends Controller
         return redirect()->route('course.students', $course)->with('success', 'Student removed from the course successfully.');
     }
 
-    // public function addStudent(Request $request, Course $course)
-    // {
-    //     $request->validate([
-    //         'student_ids' => 'required|array',
-    //         'student_ids.*' => 'exists:users,id',
-    //     ]);
-
-    //     $students = User::whereIn('id', $request->student_ids)->get();
-
-    //     // Check if all students belong to the same faculty as the lecturer
-    //     foreach ($students as $student) {
-    //         if ($student->faculty !== auth()->user()->faculty) {
-    //             return redirect()->back()->with('error', 'One or more students do not belong to your faculty.');
-    //         }
-    //     }
-
-    //     $course->users()->attach($students->pluck('id'));
-
-    //     return redirect()->route('course.students', $course)->with('success', 'Students added to the course successfully.');
-    // }
 
     public function addStudent(Request $request, Course $course)
     {
@@ -475,8 +455,12 @@ class CourseController extends Controller
 
 
         // Retrieve the students based on the decoded IDs
-        $students = User::whereIn('id', $studentIds)->get();
-
+        $students = User::whereIn('id', $studentIds)
+        ->where(function ($query) {
+            $query->where('role', 'student')
+                  ->orWhere('role', '3');
+        })
+        ->get();
 
         // Check if all students belong to the same faculty as the lecturer
         foreach ($students as $student) {
@@ -548,5 +532,17 @@ class CourseController extends Controller
         $filePath = storage_path('app/public/' . $lecture->file_path);
 
         return response()->download($filePath, $lecture->name);
+    }
+    public function settings(Course $course)
+    {
+        return view('courses.settings', compact('course'));
+    }
+
+    public function updateSettings(Request $request, Course $course)
+    {
+        $course->students_can_announce = $request->has('students_can_announce');
+        $course->save();
+
+        return redirect()->back()->with('success', 'Settings updated successfully.');
     }
 }

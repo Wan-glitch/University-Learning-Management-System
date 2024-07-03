@@ -81,6 +81,12 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('courses')->group(function () {
         Route::get('/', [CourseController::class, 'index'])->name('courses.index');
+
+        //Settingg
+        Route::get('/{course}/settings', [CourseController::class, 'settings'])->name('course.setting');
+        Route::patch('/{course}/settings', [CourseController::class, 'updateSettings'])->name('courses.update-settings');
+
+
         //Course Index
         Route::get('/{course}', [CourseController::class, 'show'])->name('courses.show');
         Route::get('/{course}/#', [CourseController::class, 'show'])->name('course.announcements'); // New route for announcements
@@ -147,11 +153,23 @@ Route::middleware('auth')->group(function () {
     Route::prefix('calendar')->group(function () {
         Route::get('/', [CalendarController::class, 'index'])->name('calendar.index');
         Route::post('/create-event', [CalendarController::class, 'store'])->name('calendar.store');
-        Route::get('/events', [CalendarController::class, 'events'])->name('calendar.events');
-        Route::get('/event', [CalendarController::class, 'event'])->name('calendar.event');
+        // Route::get('/events', [CalendarController::class, 'events'])->name('calendar.events');
+        Route::get('/event', [CalendarController::class, 'events'])->name('calendar.event');
         Route::delete('/event/{id}', [CalendarController::class, 'destroy'])->name('calendar.destroy');
         Route::post('/event-invitation/response', [CalendarController::class, 'respond'])->name('event-invitation.respond');
+        Route::get('/notifications', [CalendarController::class, 'getNotifications'])->name('notifications.index');
+        Route::post('/invitation/{id}/{response}', [CalendarController::class, 'respondToInvitation'])->name('calendar.respondInvitation');
+
+
     });
+    Route::post('/notifications/remove/{id}', [CalendarController::class, 'removeNotification'])->name('notifications.remove');
+    Route::post('/notifications/clear', [CalendarController::class, 'clearNotifications'])->name('notifications.clear');
+
+    Route::get('/calendar/events', [CalendarController::class, 'getEvents'])->name('calendar.events');
+    // Route::post('/calendar/event/{id}/accept', [CalendarController::class, 'acceptInvitation'])->name('calendar.acceptInvitation');
+    // Route::post('/calendar/event/{id}/decline', [CalendarController::class, 'declineInvitation'])->name('calendar.declineInvitation');
+    // Route::get('/calendar/invitations', [CalendarController::class, 'showInvitations'])->name('calendar.invitations');
+
 
 
 

@@ -91,15 +91,22 @@ class User extends Authenticatable
                     ->withTimestamps();
     }
 
-    public function lecturer()
-    {
-        return $this->hasOne(Lecturer::class);
-    }
+    // public function lecturer()
+    // {
+    //     return $this->hasOne(Lecturer::class);
+    // }
 
     public function bulletins()
     {
         return $this->belongsToMany(Bulletin::class, 'bulletin_user');
     }
+    public function isLecturer()
+    {
+        return $this->roles()->where('name', 'lecturer')->exists();
+    }
 
-
+    public function eventInvitations()
+    {
+        return $this->hasMany(EventGuest::class);
+    }
 }

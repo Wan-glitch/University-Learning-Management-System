@@ -6,5 +6,10 @@
         <a href="{{ route('courses.assignments', ['course' => $course->id]) }}" class="{{ request()->routeIs('course.assignments') ? 'active' : '' }}">Assignments</a>
         <a href="{{ route('course.attendance', ['course' => $course->id]) }}" class="{{ request()->routeIs('course.attendance') ? 'active' : '' }}">Attendance</a>
         <a href="{{ route('course.students', ['course' => $course->id]) }}" class="{{ request()->routeIs('course.students') ? 'active' : '' }}">Students</a>
+        @can('Update Course')
+            <a href="{{ route('course.setting', ['course' => $course->id]) }}" class="{{ request()->routeIs('course.setting') ? 'active' : '' }}">Settings</a>
+
+        @endcan
+
     </div>
 </div>
