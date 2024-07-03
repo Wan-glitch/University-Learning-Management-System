@@ -138,7 +138,7 @@
                                             </div>
                                         </div>
                                     @endforeach
-                                    @can('Create Role')
+
                                         <div class="col-xl-4 col-lg-6 col-md-6" style="padding-bottom: 20px; cursor: pointer;">
                                             <div class="card">
                                                 <div class="card-body">
@@ -162,7 +162,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endcan
+
                                 </div>
                             </div>
                         </div>
@@ -177,10 +177,10 @@
                     <div class="card-body border-bottom">
                         <h4 class="card-title" style="margin:10px">Users Table</h4>
                         <div class="row">
-                            @can('Update Role')
+
                                 <button type="button" id="assignRoleButton" class="btn btn-primary" data-bs-toggle="modal"
                                     data-bs-target="#assignRoleModal">Assign Role</button>
-                            @endcan
+
                             <div class="col-md-4 user_role"></div>
                             <div class="col-md-4 user_plan"></div>
                             <div class="col-md-4 user_status"></div>
