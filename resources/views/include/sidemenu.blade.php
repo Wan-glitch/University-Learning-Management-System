@@ -11,7 +11,28 @@
                     <div data-i18n="Analytics">Dashboard</div>
                 </a>
             </li>
-
+            <li class="menu-item {{ Request::is('courses') || Request::is('courses/*') ? 'active open' : '' }}">
+                <a href="javascript:void(0);" class="menu-link menu-toggle"
+                    onclick="expandMenuAndRedirect('{{ route('courses.index') }}')">
+                    <i class="menu-icon tf-icons bx bx-book"></i>
+                    <div data-i18n="Misc">Courses</div>
+                </a>
+                <ul class="menu-sub">
+                    @foreach ($courses as $course)
+                        <li class="menu-item {{ Request::is('courses/' . $course->slug) ? 'active' : '' }}">
+                            <a href="{{ route('courses.show', ['course' => $course->id]) }}" class="menu-link">
+                                <div>{{ $course->name }}</div>
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            </li>
+                <li class="menu-item {{ 'calendar' == request()->path() ? 'active' : '' }}">
+                    <a href="{{ route('calendar.index') }}" class="menu-link">
+                        <i class="menu-icon tf-icons bx bx-calendar-star"></i>
+                        <div data-i18n="Analytics">Calendar</div>
+                    </a>
+                </li>
             <li class="menu-item {{ request()->is('admin/users*') ? 'active' : '' }}">
                 <a href="{{ route('admin.users.index') }}" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-user"></i>
@@ -59,13 +80,8 @@
                     <div data-i18n="Slideshow Management">Slideshow Management</div>
                 </a>
             </li>
+        <!-- Layouts -->
 
-            <li class="menu-item {{ 'calendar' == request()->path() ? 'active' : '' }}">
-                <a href="{{ route('calendar.index') }}" class="menu-link">
-                    <i class="menu-icon tf-icons bx bx-calendar-star"></i>
-                    <div data-i18n="Analytics">Calendar</div>
-                </a>
-            </li>
 
             <li class="menu-item">
                 <form action="{{ route('logout') }}" method="POST" style="display: inline;">
