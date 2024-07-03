@@ -12,7 +12,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Ensure all existing records have valid foreign keys
 
         DB::table('users')->whereNull('faculty')->update(['faculty' => 1]); // Assuming 1 is a valid faculty ID
 

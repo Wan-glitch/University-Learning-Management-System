@@ -22,8 +22,8 @@ return new class extends Migration
             $table->boolean('user_status')->default(1);;
             $table->unsignedBigInteger('role')->nullable();
             $table->unsignedBigInteger('faculty')->nullable();
-            $table->string('social_id')->nullable();    // add social_id column with varchar type
-            $table->string('social_type')->nullable();  // add social_type column with varchar type
+            $table->string('social_id')->nullable();
+            $table->string('social_type')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->rememberToken();
