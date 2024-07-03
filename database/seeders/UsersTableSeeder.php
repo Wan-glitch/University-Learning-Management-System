@@ -15,16 +15,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('users')->truncate(); //for cleaning earlier data to avoid duplicate entries
-        // DB::table('users')->insert([
-        //     'role' => 0,
-        //     'user_name' => 'Naim Hariz',
-        //     'email' => 'anaimhariz@gmail.com',
-        //     'password' => Hash::make('password'),
-        //     'user_address' => 'JKDM Presint 2',
-        //     'user_postcode' => '62000',
-        //     'user_state' => 'Putrajaya',
-        // ]);
+
 
         $data = [
             [

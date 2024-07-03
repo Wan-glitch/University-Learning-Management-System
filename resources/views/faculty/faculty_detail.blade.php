@@ -32,15 +32,12 @@
             <h5 class="m-0 me-2">Faculty Details</h5>
           </div>
           <div class="col-md-4" style="float: right;">
-                {{-- <button type="button" class="btn btn-primary" style="float: right;" onclick="window.location='{{ route('setting.add') }}';">
-                    <span class="tf-icons bx bx-plus"></span>&nbsp; Location
-                </button> --}}
+
             </div>
 
         </div>
         <div class="card-body">
-          <div class="row">
-            <!-- Contact info -->
+
             <div class="col-lg-12 col-md-6 col-12 mb-4">
                 <div class="row mb-3 mt-3">
                     <label class="col-sm-2 col-form-label" for="basic-default-name">Faculty Name</label>
@@ -95,56 +92,12 @@
                                 : '<span class="badge bg-label-secondary me-1">Archived</span>') !!}
                     </div>
                 </div>
-
-
-            {{-- @can('Update Location')
-
-                <div class="grid">
-                    @if ($location->location_status == 1)
-                        <div class="item">
-                            <div class="content">
-                                <form action="{{ route('setting.edit.location', ['id' => $location->id]) }}">
-                                    <button type="submit" class="btn btn-success">Edit</button>
-                                </form>
-                            </div>
-                        </div>
-                    @endif
-                    @if ($location->location_status == 1)
-                        <div class="item">
-                            <div class="content">
-                                <form id="deleteLocationForm-{{ $location->id }}" action="{{ route('setting.location.delete', ['id' => $location->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" id="deleteLocationId" name="location_id" value="{{ $location->id }}">
-                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Location?')">
-                                        Delete <i class="fas fa-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endif
-                    @if ($location->location_status == 0)
-                        <div class="item">
-                            <div class="content">
-                                <form id="recoverLocationForm-{{ $location->id }}" action="{{ route('setting.location.recover', ['id' => $location->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" id="recoverLocationId" name="location_id" value="{{ $location->id }}">
-                                    <button type="submit" data-mdb-ripple-color="dark" class="btn btn-primary" onclick="return confirm('Are you sure you want to Restore this Location?')">
-                                        Recover
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-            @endcan --}}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!--/ Ticket list -->
+
   </div>
 </div>
 <!-- / Content -->
@@ -167,7 +120,7 @@
     <!-- Page JS -->
     <script src="/assets/js/dashboards-analytics.js"></script>
 
-    <!-- Place this tag in your head or just before your close body tag. -->
+
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
 

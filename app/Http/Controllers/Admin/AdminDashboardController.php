@@ -32,9 +32,9 @@ class AdminDashboardController extends Controller
         $courses = $user->courses;
         // Sample data for the cards
         $usersCount = User::count();
-        $Roles = Role::count();  // Replace with your actual data
-        $FacultyCount = Faculty::count();    // Replace with your actual data
-        $courseCount = Course::count();       // Replace with your actual data
+        $Roles = Role::count();
+        $FacultyCount = Faculty::count();
+        $courseCount = Course::count();
 
         // Fetch new users data for the chart (last 12 months)
         $newUsersData = User::selectRaw('COUNT(id) as count, DATE_FORMAT(created_at, "%Y-%m") as month')

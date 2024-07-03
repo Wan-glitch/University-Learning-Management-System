@@ -6,7 +6,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Single user creation form -->
+
                 <form id="singleUserForm" method="POST" action="{{ route('admin.courses.store') }}">
                     @csrf
                     <div class="mb-3">
@@ -55,7 +55,7 @@
                     <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
                     <div>
                         <div class='tagify__tag__avatar-wrap'>
-                            <!-- Avatar can be added here -->
+
                         </div>
                         <span class='tagify__tag-text'>${tagData.name}</span>
                     </div>
@@ -69,7 +69,7 @@
                     class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
                     tabindex="0"
                     role="option">
-                    <!-- Avatar can be added here -->
+
                     <strong>${tagData.name}</strong>
                      <span>(${tagData.email})</span>
                 </div>

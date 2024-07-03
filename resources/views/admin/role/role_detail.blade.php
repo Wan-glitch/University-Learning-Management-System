@@ -33,7 +33,7 @@
 @endphp
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row">
-      <!-- Ticket list -->
+
       <div class="col-lg-12 col-md-12 col-12 mb-4">
         <div class="card h-100">
           <div class="card-header d-flex align-items-center justify-content-between pb-0">
@@ -156,13 +156,12 @@
     </div>
 </div>
 
-    <!--/ Ticket list -->
 
 
 
     <div class="container">
         <div class="row">
-          <!-- Ticket list -->
+
           <div class="col-lg-12 col-md-12 col-12 mb-4">
             <div class="card h-100">
               <div class="card-header d-flex align-items-center justify-content-between pb-0">
@@ -173,7 +172,7 @@
             </div>
             <div class="card-body">
               <div class="row">
-                <!-- Contact info -->
+
                 <div class="col-lg-12 col-md-12 col-12 mb-3 mt-3">
                     <div class="col-12" style="padding-bottom: 30px">
                         <h5 class="mt-2 pt-50">Role Permissions</h5>
@@ -270,7 +269,6 @@
     <!-- Page JS -->
     <script src="/assets/js/dashboards-analytics.js"></script>
 
-    <!-- Place this tag in your head or just before your close body tag. -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script>
 

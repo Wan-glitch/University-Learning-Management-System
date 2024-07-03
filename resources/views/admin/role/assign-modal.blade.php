@@ -44,7 +44,7 @@
 
 
 <script>
-    // Initialize Tagify on your input element
+    // Initialize Tagify on input element
     var input = document.querySelector('#TagifyUserList');
     var tagify = new Tagify(input, {
         duplicates: false,  // Disable duplicate tags

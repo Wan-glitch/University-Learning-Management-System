@@ -152,14 +152,14 @@ class UserController extends Controller
 
     public function getInitialSuggestions()
     {
-        // Query your database to get initial tag suggestions
+        // Query the database to get initial tag suggestions
         $suggestions = User::select('id', 'name', 'email')->take(5)->get();
         return response()->json($suggestions);
     }
 
     public function getUserSuggestions(Request $request)
     {
-        // Query your database to get suggestions based on the query
+        // Query the database to get suggestions based on the query
         $query = $request->query('query');
         $suggestions = User::where('name', 'like', "%{$query}%")
                            ->orWhere('email', 'like', "%{$query}%")

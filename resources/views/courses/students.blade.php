@@ -164,13 +164,13 @@
                     // Handle success response
                     console.log(response);
                     $('#addUserModal').modal('hide'); // Hide the modal
-                    // You can display success message or do other actions
+
                     location.reload(); // Reload the page to see the new user
                 },
                 error: function(xhr, status, error) {
                     // Handle error response
                     console.error(xhr.responseText);
-                    // You can display error message or do other actions
+
                 }
             });
         });
