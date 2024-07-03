@@ -49,7 +49,7 @@
                         <a class="btn btn-primary" href="{{ route('setting.managerole') }}"> Back</a>
                     </div> --}}
                         <div class="card-body">
-                            <form action="{{ route('setting.update.role', ['id' => $selectedRole->id]) }}" method="POST" id="RoleForm">
+                            <form action="{{ route('admin.update.role', ['id' => $selectedRole->id]) }}" method="POST" id="RoleForm">
                                 @csrf
                                 @method('PUT')
                                 <div class="row">
