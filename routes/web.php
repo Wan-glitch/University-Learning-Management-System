@@ -42,7 +42,7 @@ use App\Http\Controllers\Admin\BulletinController as AdminBulletinController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [WelcomeController::class, 'index'])->name('elcome');
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 // Route for login
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login');
